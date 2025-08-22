@@ -2,12 +2,12 @@ import { Routes, Route } from "react-router-dom";
 import { Box, Heading, Button } from "@chakra-ui/react";
 import Navbar from './components/Navbar';
 import HomePage from "./Pages/Home/HomePage";
-import About from "./Pages/About/About";
+import About from "./Pages/About/About.jsx";
 
 function App() {
   return (
     <Box p={6}>
-      
+
       <Navbar />
 
       <Routes>
@@ -15,7 +15,6 @@ function App() {
         <Route path="/about" element={<About />} />
       </Routes>
 
-      <Button colorScheme="teal" mt={4}>Test Button</Button>
     </Box>
   );
 }
