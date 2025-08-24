@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Box, Flex, HStack, VStack, IconButton, Link, useDisclosure, Stack, Heading } from "@chakra-ui/react";
 import { Menu, X, GraduationCap, Sun, Moon } from "lucide-react";   // using Lucide icons
@@ -38,7 +37,7 @@ export default function MyNavbar() {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isOpened, setIsOpen] = useState(false);
   const navBg = useColorModeValue("teal.400", "teal.700");
-  const dropdownBg = useColorModeValue("teal.100", "teal.800");
+  const dropdownBg = useColorModeValue("teal.200", "teal.800");
   const headingColor = useColorModeValue("black", "white");
 
 
