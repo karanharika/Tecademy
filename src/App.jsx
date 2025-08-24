@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Box, Heading, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import Navbar from './components/Navbar';
 import HomePage from "./Pages/Home/HomePage";
 import About from "./Pages/About/About.jsx";
@@ -20,25 +20,3 @@ function App() {
 }
 
 export default App;
-
-
-// import { Routes, Route, Link } from 'react-router-dom';
-// import Navbar from './components/Navbar';
-// import HomePage from './Pages/Home/HomePage';
-// import About from './Pages/About/About';
-
-// function App() {
-//   return (
-//     <div>
-//       {/* <Navbar></Navbar> */}
-
-
-//       <Routes>
-//         <Route path="/" element={<HomePage />} />
-//         <Route path="/about" element={<About />} />
-//       </Routes>
-//     </div>
-//   );
-// }
-
-// export default App;

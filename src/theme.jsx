@@ -1,64 +1,45 @@
 // src/theme.js
-// import { extendTheme } from "@chakra-ui/react";
+// theme.js
+import { createSystem, defaultConfig, defineRecipe, defineSlotRecipe } from "@chakra-ui/react"
 
-// const theme = extendTheme({
-//   config: {
-//     initialColorMode: "light",
-//     useSystemColorMode: false,
-//   },
-// });
-
-// export default theme;
-
-
-// import { createSystem, defaultConfig } from "@chakra-ui/react";
-
-// const system = createSystem(defaultConfig, {
-//   theme: {
-//     tokens: {
-//       colors: {
-//         brand: {
-//           500: { value: "#3182ce" },
-//           600: { value: "#2c5282" },
-//         },
-//       },
-//       fonts: {
-//         heading: { value: "'Inter', sans-serif" },
-//         body: { value: "'Inter', sans-serif" },
-//       },
-
-
-//       // Add more tokens like sizes, space, etc. as needed
-//     },
-//     // You can also define recipes, styles, etc.
-//   },
-// });
-
-// export default system;
-
-// theme.jsx
-// theme.jsx
-// theme.jsx
-// theme.jsx
-
-// theme.jsx
-import { createSystem, defaultConfig } from "@chakra-ui/react"
-
-const system = createSystem(defaultConfig, {
-  theme: {
-    colors: {
-      bg: {
-        DEFAULT: "#6695d1",  // light mode
-        _dark: "#1a202c",    // dark mode
+const buttonRecipe = defineRecipe({
+  base: {
+    borderRadius: "md",
+    fontWeight: "bold",
+    color: "red",
+  },
+  variants: {
+    solid: {
+      bg: { base: "yellow.400", _dark: "teal.400" },
+      color: { base: "green", _dark: "yellow" },
+      _hover: {
+        bg: { base: "yellow.200", _dark: "teal.700" },
       },
     },
-    styles: {
-      global: {
-        "html, body": {
-          bg: "bg",   // will now use your overridden token
-          color: "fg",
-        },
+  },
+  defaultVariants: {
+    variant: "solid",
+  },
+})
+
+const system = createSystem(defaultConfig, {
+  globalCss: {
+    "html, body, #root,": {
+      margin: 0,
+      padding: 0,
+      backgroundColor: {
+        base: "teal.100",
+        _dark: "teal.900",
       },
+      color: {
+        base: "gray.900",
+        _dark: "whiteAlpha.950",
+      },
+    },
+  },
+  theme: {
+    recipes: {
+      button: buttonRecipe,
     },
     semanticTokens: {
       colors: {
@@ -66,12 +47,20 @@ const system = createSystem(defaultConfig, {
           default: { value: "#1a202c" },
           _dark: { value: "#f0f4f9" },
         },
+        bg: {
+          default: { value: "#6695d1" },
+          _dark: { value: "#1a202c" },
+        },
       },
     },
   },
 })
 
+
 export default system
+
+
+
 
 
 

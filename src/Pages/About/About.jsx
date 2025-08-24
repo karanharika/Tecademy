@@ -1,34 +1,32 @@
 // import './About.css';
-
-// function About() {
-//   return (
-//     <div className="about">
-//       <h1>About Page</h1>
-//       <p>This is the about page.</p>
-//     </div>
-//   );
-// }
-
-// export default About;
-
-
-import { Box, Text, Stack, Button } from "@chakra-ui/react";
-import { useColorMode, useColorModeValue } from "../../components/ui/color-mode";
+import { Box, Text, Stack } from "@chakra-ui/react";
+import { useColorMode } from "../../components/ui/color-mode";
+import { useColorModeValue } from "../../components/ui/color-mode";
+import { Button } from "@chakra-ui/react/button";
 
 export default function About() {
-  const homeBg = useColorModeValue("teal.400", "teal.700");
-  const dropdownBg = useColorModeValue("teal.100", "teal.800");
-  const homeColor = useColorModeValue("black", "white");
+  const boxBg = useColorModeValue("teal.400", "teal.700");
+  const buttonBg = useColorModeValue("teal.100", "teal.800");
+  const txtColor = useColorModeValue("black", "white");
+  const HoverBg = useColorModeValue("teal.200", "teal.600");
+  const hoverColor = useColorModeValue("teal.700", "teal.100");
 
   return (
-    <Box  position="fixed" top="10%" left="0" w="100%">
+    <Box position="fixed" top="10%" left="0" w="100%">
 
-      <Box bg={homeBg} position="fixed" top="20%" m={5} padding="2%" width="33%" rounded="md">
-        <Text  fontSize="xl">This is About Page ℹ️</Text>
+      <Box bg={boxBg} position="fixed" top="20%" m={5} padding="2%" width="33%" rounded="md">
+        <Text fontSize="xl">This is About Page ℹ️</Text>
 
         <Stack position="relative" top='20%' width="50%">
-          <Button bg={dropdownBg} color={homeColor}  mt={20}>Contact Us</Button>
+          <Button
+            bg={buttonBg}
+            color={txtColor}
+            _hover={{ bg: HoverBg, color: hoverColor }}
+            mt={20}>
+            Contact Us
+          </Button>
         </Stack>
+
       </Box>
 
     </Box>
