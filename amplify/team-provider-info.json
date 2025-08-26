@@ -1,0 +1,25 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-tecademy-dev-d4390-authRole",
+      "UnauthRoleArn": "arn:aws:iam::342848091098:role/amplify-tecademy-dev-d4390-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::342848091098:role/amplify-tecademy-dev-d4390-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-tecademy-dev-d4390-deployment",
+      "UnauthRoleName": "amplify-tecademy-dev-d4390-unauthRole",
+      "StackName": "amplify-tecademy-dev-d4390",
+      "StackId": "arn:aws:cloudformation:ap-south-1:342848091098:stack/amplify-tecademy-dev-d4390/b709e540-827c-11f0-af7c-0ae2978a5a41",
+      "AmplifyAppId": "dp56noun6j4ew"
+    },
+    "categories": {
+      "auth": {
+        "tecademyc3eb5201": {
+          "userPoolId": "ap-south-1_0KCR9EPtH",
+          "userPoolName": "User pool - 3bfcw1",
+          "webClientId": "568vclf34nfvdada1ajega50df",
+          "nativeClientId": "568vclf34nfvdada1ajega50df"
+        }
+      }
+    }
+  }
+}
