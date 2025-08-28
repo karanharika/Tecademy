@@ -1,5 +1,5 @@
 // import './About.css';
-import { Box, Text, Stack } from "@chakra-ui/react";
+import { Box, Text, Heading, Stack } from "@chakra-ui/react";
 import { useColorMode } from "../../components/ui/color-mode";
 import { useColorModeValue } from "../../components/ui/color-mode";
 import { Button } from "@chakra-ui/react/button";
@@ -12,10 +12,22 @@ export default function About() {
   const hoverColor = useColorModeValue("teal.700", "teal.100");
 
   return (
-    <Box position="fixed" top="10%" left="0" w="100%">
+    <Box display="flex"
+      alignItems="center"
+      justifyContent="center" w="100%">
 
-      <Box bg={boxBg} position="fixed" top="20%" m={5} padding="2%" width="33%" rounded="md">
-        <Text fontSize="xl">This is About Page ℹ️</Text>
+      <Box bg={boxBg}
+        mt={"125px"}
+        ml={"2.5%"}
+        mr={"2.5%"}
+        p={"2%"}
+        pt={"5%"}
+        w={["85%", "80%", "75%", "90%"]}
+        rounded="md">
+
+        <Heading fontSize="4xl">About Us </Heading>
+
+        
 
         <Stack position="relative" top='20%' width="50%">
           <Button
