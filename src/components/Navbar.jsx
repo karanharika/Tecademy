@@ -436,14 +436,14 @@ export default function Navbar() {
 
   // ✅ Safely extract username/email from Amplify v6 user object
   const displayName =
-  user?.attributes?.given_name ||
-  user?.attributes?.email ||
-  user?.signInDetails?.loginId ||
-  user?.username ||
-  "User";
+    user?.attributes?.given_name ||
+    user?.attributes?.email ||
+    user?.signInDetails?.loginId ||
+    user?.username ||
+    "User";
 
 
-  console.log("Navbar user:", displayName);
+  console.log("Prt Navbar user:", displayName);
 
   return (
     <Box
@@ -483,14 +483,18 @@ export default function Navbar() {
           {/* ✅ Auth Section */}
           {user ? (
             <HStack spacing={3}>
-              <Avatar size="sm" name={displayName} />
+              {/* <Avatar size="sm" name={displayName} /> */}
+              <Avatar.Root>
+                <Avatar.Fallback name={displayName} />
+                <Avatar.Image src="#" />
+              </Avatar.Root>
               <VStack spacing={0} align="start">
-                <Text fontWeight="bold">Hello, {displayName}</Text>
-                {user?.attributes?.email && (
+                <Text fontWeight="normal">Hello, {displayName}</Text>
+                {/* {user?.attributes?.email && (
                   <Text fontSize="sm" color="gray.200">
                     {user.attributes.email}
                   </Text>
-                )}
+                )} */}
               </VStack>
               <Button
                 onClick={logout}
