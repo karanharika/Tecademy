@@ -126,9 +126,6 @@ import {
 } from "aws-amplify/auth";
 
 
-fetchAuthSession().then(s => console.log("session:", s)).catch(e => console.error("session err", e));
-
-
 const AuthContext = createContext({
   user: null,
   loading: true,

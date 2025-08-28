@@ -377,18 +377,7 @@
 // ***********************************************************************************************************************
 // //Navbar.js
 import { useState } from "react";
-import {
-  Box,
-  Flex,
-  HStack,
-  VStack,
-  IconButton,
-  Link,
-  Heading,
-  Button,
-  Avatar,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, HStack, VStack, IconButton, Link, Heading, Button, Avatar, Text, } from "@chakra-ui/react";
 import { Menu, X, GraduationCap, Sun, Moon } from "lucide-react";
 import { Link as RouterLink } from "react-router-dom";
 import { useColorMode, useColorModeValue } from "./ui/color-mode";
@@ -397,12 +386,12 @@ import { useAuthContext } from "../auth/AuthProvider";
 const Links = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
-  { name: "Contact", path: "/contact" },
+
 ];
 
 function NavLink({ to, children }) {
   const linkHoverBg = useColorModeValue("teal.200", "teal.800");
-  const linkActiveBg = useColorModeValue("teal.100", "teal.900");
+  const linkActiveBg = useColorModeValue("teal.300", "teal.900");
   const linkColor = useColorModeValue("gray.800", "white");
 
   return (
@@ -413,9 +402,10 @@ function NavLink({ to, children }) {
       py={2}
       rounded={"md"}
       _hover={{ bg: linkHoverBg, color: linkColor }}
-      _activeLink={{ bg: linkActiveBg, color: "white" }}
+      _activeLink={{ bg: linkActiveBg, color: "teal" }}
       color={linkColor}
       display="block"
+      fontWeight="semibold"
     >
       {children}
     </Link>
@@ -428,6 +418,10 @@ export default function Navbar() {
   const navBg = useColorModeValue("teal.400", "teal.700");
   const dropdownBg = useColorModeValue("teal.200", "teal.800");
   const headingColor = useColorModeValue("black", "white");
+  const altButtonBg = useColorModeValue("teal.800", "teal.100");
+  const altTxtColor = useColorModeValue("white", "black");
+  const altHoverBg = useColorModeValue("teal.900", "teal.200");
+  const altHoverColor = useColorModeValue("teal.200", "teal.700");
 
   const { user, logout } = useAuthContext();
 
@@ -443,13 +437,10 @@ export default function Navbar() {
     "User";
 
 
-  console.log("Prt Navbar user:", displayName);
-
   return (
     <Box
       bg={navBg}
       px={4}
-      color="white"
       position="fixed"
       top="0"
       left="0"
@@ -459,7 +450,7 @@ export default function Navbar() {
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         {/* Brand / Logo */}
         <Box fontWeight="bold" color="white">
-          <HStack>
+          <HStack as={RouterLink} to="/">
             <GraduationCap size={40} color={headingColor} />
             <Heading
               size="2xl"
@@ -483,7 +474,6 @@ export default function Navbar() {
           {/* ✅ Auth Section */}
           {user ? (
             <HStack spacing={3}>
-              {/* <Avatar size="sm" name={displayName} /> */}
               <Avatar.Root>
                 <Avatar.Fallback name={displayName} />
                 <Avatar.Image src="#" />
@@ -510,20 +500,26 @@ export default function Navbar() {
               <Button
                 as={RouterLink}
                 to="/login"
-                colorScheme="whiteAlpha"
+                variant="ghost"
+                color={headingColor}
+                _hover={{ bg: altHoverBg, color: altHoverColor }}
                 size="sm"
+                rounded="full"
               >
                 Login
               </Button>
+
               <Button
                 as={RouterLink}
                 to="/register"
-                colorScheme="teal"
-                variant="solid"
+                bg={altButtonBg} color={altTxtColor}
+                _hover={{ bg: altHoverBg, color: altHoverColor }}
                 size="sm"
+                rounded="full"
               >
                 Sign Up
               </Button>
+
             </HStack>
           )}
 
@@ -563,7 +559,7 @@ export default function Navbar() {
         <Box
           bg={dropdownBg}
           margin="2%"
-          width="25%"
+          width="50%"
           position="fixed"
           right="0"
           p={4}
@@ -580,7 +576,10 @@ export default function Navbar() {
             {/* ✅ Mobile auth */}
             {user ? (
               <VStack spacing={3}>
-                <Avatar size="sm" name={displayName} />
+                <Avatar.Root>
+                  <Avatar.Fallback name={displayName} />
+                  <Avatar.Image src="#" />
+                </Avatar.Root>
                 <Text>Hello, {displayName}</Text>
                 <Button onClick={logout} colorScheme="red" size="sm">
                   Logout
@@ -591,9 +590,12 @@ export default function Navbar() {
                 <Button
                   as={RouterLink}
                   to="/login"
-                  colorScheme="whiteAlpha"
+                  variant="ghost"
+                  color={headingColor}
+                  _hover={{ bg: altHoverBg, color: altHoverColor }}
                   size="sm"
                   w="full"
+                  rounded="full"
                 >
                   Login
                 </Button>
@@ -603,6 +605,9 @@ export default function Navbar() {
                   colorScheme="teal"
                   size="sm"
                   w="full"
+                  bg={altButtonBg} color={altTxtColor}
+                  _hover={{ bg: altHoverBg, color: altHoverColor }}
+                  rounded="full"
                 >
                   Sign Up
                 </Button>
