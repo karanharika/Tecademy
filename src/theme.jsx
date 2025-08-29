@@ -38,6 +38,14 @@ const system = createSystem(defaultConfig, {
     },
   },
   theme: {
+    tokens: {
+      colors: {
+        floatingBg: { value: "#14b8a6" },      // teal.400 Light
+        floatingBgDark: { value: "#0c5d56" },  // teal.700 Dark
+        floatingLabelColor: { value: "#0c5d56" },     // teal.700 Light
+        floatingLabelColorDark: { value: "#99f6e4" }, // teal.200 Dark
+      },
+    },
     recipes: {
       button: buttonRecipe,
     },
@@ -50,6 +58,12 @@ const system = createSystem(defaultConfig, {
         bg: {
           default: { value: "#6695d1" },
           _dark: { value: "#1a202c" },
+        },
+        floatingBg: {
+          value: { base: "{colors.teal.400}", _dark: "{colors.teal.700}" },
+        },
+        floatingLabelColor: {
+          value: { base: "{colors.floatingLabelColor}", _dark: "{colors.floatingLabelColorDark}" },
         },
       },
     },
