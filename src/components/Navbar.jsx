@@ -422,20 +422,23 @@ export default function Navbar() {
   const altTxtColor = useColorModeValue("white", "black");
   const altHoverBg = useColorModeValue("teal.900", "teal.200");
   const altHoverColor = useColorModeValue("teal.200", "teal.700");
+  const colorPalette = ["teal", "pink", "cyan", "blue", "orange", "purple"];
+
+  const pickPalette = (name) => {
+    const index = name.charCodeAt(0) % colorPalette.length
+    return colorPalette[index]
+  }
 
   const { user, logout } = useAuthContext();
-
-
-
 
   // ✅ Safely extract username/email from Amplify v6 user object
   const displayName =
     user?.attributes?.given_name ||
-    user?.attributes?.email ||
-    user?.signInDetails?.loginId ||
-    user?.username ||
+    // user?.attributes?.email ||
+    // user?.signInDetails?.loginId ||
+    // user?.username ||
     "User";
-
+  const avatarName = user?.attributes?.given_name + " " + user?.attributes?.family_name;
 
   return (
     <Box
@@ -474,8 +477,8 @@ export default function Navbar() {
           {/* ✅ Auth Section */}
           {user ? (
             <HStack spacing={3}>
-              <Avatar.Root>
-                <Avatar.Fallback name={displayName} />
+              <Avatar.Root size="md" colorPalette={pickPalette(avatarName)}>
+                <Avatar.Fallback name={avatarName} />
                 <Avatar.Image src="#" />
               </Avatar.Root>
               <VStack spacing={0} align="start">
@@ -488,9 +491,11 @@ export default function Navbar() {
               </VStack>
               <Button
                 onClick={logout}
-                colorScheme="red"
+                bg={altButtonBg} color={altTxtColor}
+                _hover={{ bg: altHoverBg, color: altHoverColor }}
                 size="sm"
                 variant="solid"
+                rounded="full"
               >
                 Logout
               </Button>
@@ -576,12 +581,13 @@ export default function Navbar() {
             {/* ✅ Mobile auth */}
             {user ? (
               <VStack spacing={3}>
-                <Avatar.Root>
-                  <Avatar.Fallback name={displayName} />
+                <Avatar.Root colorPalette={pickPalette(avatarName)}>
+                  <Avatar.Fallback name={avatarName} />
                   <Avatar.Image src="#" />
                 </Avatar.Root>
                 <Text>Hello, {displayName}</Text>
-                <Button onClick={logout} colorScheme="red" size="sm">
+                <Button onClick={logout} size="sm" w="full" rounded="full" bg={altButtonBg} color={altTxtColor}
+                  _hover={{ bg: altHoverBg, color: altHoverColor }} >
                   Logout
                 </Button>
               </VStack>
