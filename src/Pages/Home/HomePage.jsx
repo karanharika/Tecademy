@@ -1,7 +1,20 @@
-import { Box, Heading, Text, Highlight, Button, Stack,Link } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  Highlight,
+  Button,
+  Stack,
+  Link,
+} from "@chakra-ui/react";
 import { Ghost } from "lucide-react";
-import {Link as RouterLink} from "react-router-dom";
-import { useColorMode, useColorModeValue } from "../../components/ui/color-mode";
+import { Link as RouterLink } from "react-router-dom";
+import {
+  useColorMode,
+  useColorModeValue,
+} from "../../components/ui/color-mode";
+import { Input, InputGroup, Kbd } from "@chakra-ui/react";
+import { LuSearch } from "react-icons/lu";
 
 export default function HomePage() {
   const boxBg = useColorModeValue("teal.400", "teal.800");
@@ -17,65 +30,67 @@ export default function HomePage() {
 
   return (
     <Box mt={16} left="0" w="100%">
-
-      <Box mt={10} ml="5%" p="2%" w={["85%", "80%", "60%", "95%"]} rounded="md" >
+      <Box mt={10} ml="5%" p="2%" w={["85%", "80%", "60%", "95%"]} rounded="md">
         <Heading color={hoverColor} size="5xl">
           <Highlight query="TecaTokens" styles={{ color: highlightColor }}>
             Learn, Teach, and Grow — Powered by TecaTokens
           </Highlight>
-
-
         </Heading>
-        <Text fontSize="2xl" color="fg.muted" w={["100%", "100%", "100%", "95%"]}>
-          Tecademy is a peer-to-peer tutoring platform where students exchange knowledge
-          through tokens. Teach to earn, spend to learn — a community built on shared growth.
+        <Text
+          fontSize="2xl"
+          color="fg.muted"
+          w={["100%", "100%", "100%", "95%"]}
+        >
+          Tecademy is a peer-to-peer tutoring platform where students exchange
+          knowledge through tokens. Teach to earn, spend to learn — a community
+          built on shared growth.
         </Text>
       </Box>
 
-      <Box bg={boxBg} mt={7} ml="10%" p="2%" w={["85%", "80%", "60%", "40%"]} rounded="md" boxShadow="xl">
-        <Text fontSize="xl">This is HomePage 🏠</Text>
+      <Box
+        bg={boxBg}
+        mt={7}
+        ml="2%"
+        p="2%"
+        w={["100%", "100%", "100%", "95%"]}
+        rounded="md"
+        boxShadow="xl"
+      >
+        <InputGroup flex="1" startElement={<LuSearch />}>
+        <Input placeholder="Search For Topics" />
+       </InputGroup>
 
         <Stack w="50%">
-        <Button bg={altButtonBg} color={altTxtColor}
+          <Button
+            bg={altButtonBg}
+            color={altTxtColor}
             _hover={{ bg: altHoverBg, color: altHoverColor }}
-         mt={16} >Sign up</Button>
+            mt={16}
+          >
+            Sign up
+          </Button>
 
-          <Button bg={buttonBg} color={txtColor}
+          <Button
+            bg={buttonBg}
+            color={txtColor}
             _hover={{ bg: HoverBg, color: hoverColor }}
-           mt={4} >Login</Button>
+            mt={4}
+          >
+            Login
+          </Button>
 
-            <Button as={RouterLink} to="/faq" bg={buttonBg} color={txtColor}
+          <Button
+            as={RouterLink}
+            to="/faq"
+            bg={buttonBg}
+            color={txtColor}
             _hover={{ bg: HoverBg, color: hoverColor }}
-           mt={4} >FAQ </Button>
-
-
+            mt={4}
+          >
+            FAQ{" "}
+          </Button>
         </Stack>
       </Box>
-
-      <Box bg={boxBg} mt={10} ml="10%" p="2%" w={["85%", "80%", "60%", "40%"]} rounded="md">
-        <Text fontSize="xl">This is HomePage 🏠</Text>
-
-        <Stack position="relative" top='20%' w="50%">
-          <Button bg={buttonBg} color={txtColor}
-            _hover={{ bg: HoverBg, color: hoverColor }}
-            mt={20}>Login</Button>
-
-          <Button mt={4}>Sign up</Button>
-        </Stack>
-      </Box>
-
-      <Box bg={boxBg} mt={10} ml="10%" p="2%" w={["85%", "80%", "60%", "40%"]} rounded="md">
-        <Text fontSize="xl">This is HomePage 🏠</Text>
-
-        <Stack position="relative" top='20%' w="50%">
-          <Button bg={buttonBg} color={txtColor}
-            _hover={{ bg: HoverBg, color: hoverColor }}
-            mt={20}>Login</Button>
-
-          <Button mt={4}>Sign up</Button>
-        </Stack>
-      </Box>
-
     </Box>
   );
 }

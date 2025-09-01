@@ -456,10 +456,11 @@ export default function Navbar() {
           <HStack as={RouterLink} to="/">
             <GraduationCap size={40} color={headingColor} />
             <Heading
-              size="2xl"
+              size={'4xl'}
               letterSpacing="tight"
               fontWeight="semibold"
               color={headingColor}
+              fontFamily='old_londonregular'
             >
               Tecademy
             </Heading>
