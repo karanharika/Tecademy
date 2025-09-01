@@ -171,7 +171,7 @@ export default function FAQ() {
 const items = [
   {
     value: "a",
-    title: "Q: What is Tecadamy?",
+    title: "What is Tecadamy?",
     text: `"A: Tecadamy is a collaborative learning platform where students connect to share knowledge with one another. It creates a space where every learner has the chance to become a teacher and every teacher can still be a learner."`,
   },
   {

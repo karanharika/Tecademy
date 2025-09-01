@@ -32,7 +32,7 @@ import LoginForm from "./auth/LoginForm.jsx";
 import RegisterForm from "./auth/RegisterForm.jsx";
 import { useAuth } from "./auth/useAuth";  // custom hook - MAIN
 // import { useAuth } from "./auth/authContext";  // TESTING
-import FAQ from "./Pages/faq/faq.jsx";   // 👈 new import
+import FAQ from "./Pages/FAQ/FAQ.jsx";   // 👈 new import
 
 
 
