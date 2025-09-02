@@ -457,7 +457,7 @@ export default function Navbar() {
             <GraduationCap size={40} color={headingColor} />
             <Heading
               size={'4xl'}
-              letterSpacing="tight"
+              letterSpacing="normal"
               fontWeight="semibold"
               color={headingColor}
               fontFamily='old_londonregular'
