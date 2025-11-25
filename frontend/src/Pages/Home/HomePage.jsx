@@ -1,5 +1,6 @@
-import { Box, Heading, Text, Highlight, Button, Stack } from "@chakra-ui/react";
+import { Box, Heading, Text, Highlight, Button, Stack,Link } from "@chakra-ui/react";
 import { Ghost } from "lucide-react";
+import {Link as RouterLink} from "react-router-dom";
 import { useColorMode, useColorModeValue } from "../../components/ui/color-mode";
 
 export default function HomePage() {
@@ -42,6 +43,10 @@ export default function HomePage() {
           <Button bg={buttonBg} color={txtColor}
             _hover={{ bg: HoverBg, color: hoverColor }}
            mt={4} >Login</Button>
+
+            <Button as={RouterLink} to="/faq" bg={buttonBg} color={txtColor}
+            _hover={{ bg: HoverBg, color: hoverColor }}
+           mt={4} >FAQ </Button>
 
 
         </Stack>

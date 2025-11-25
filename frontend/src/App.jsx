@@ -32,6 +32,8 @@ import LoginForm from "./auth/LoginForm.jsx";
 import RegisterForm from "./auth/RegisterForm.jsx";
 import { useAuth } from "./auth/useAuth";  // custom hook - MAIN
 // import { useAuth } from "./auth/authContext";  // TESTING
+import FAQ from "./Pages/FAQ/FAQ.jsx";   // 👈 new import
+import Host from "./Pages/Host/host.jsx";
 
 
 
@@ -57,13 +59,22 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
-
+        <Route path="/FAQ" element={<FAQ/>} /> 
         {/* Protected route example */}
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/host"
+          element={
+            <ProtectedRoute>
+              <Host />
             </ProtectedRoute>
           }
         />
