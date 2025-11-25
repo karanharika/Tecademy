@@ -383,11 +383,12 @@ import { Link as RouterLink } from "react-router-dom";
 import { useColorMode, useColorModeValue } from "./ui/color-mode";
 import { useAuthContext } from "../auth/AuthProvider";
 
-const Links = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
+// const Links = [
+//   { name: "Home", path: "/" },
+//   { name: "About", path: "/about" },
+//   { name: "FAQs", path: "/faq" },
 
-];
+// ];
 
 function NavLink({ to, children }) {
   const linkHoverBg = useColorModeValue("teal.200", "teal.800");
@@ -423,6 +424,9 @@ export default function Navbar() {
   const altHoverBg = useColorModeValue("teal.900", "teal.200");
   const altHoverColor = useColorModeValue("teal.200", "teal.700");
   const colorPalette = ["teal", "pink", "cyan", "blue", "orange", "purple"];
+  const linkHoverBg = useColorModeValue("teal.200", "teal.800");
+  const linkActiveBg = useColorModeValue("teal.300", "teal.900");
+  const linkColor = useColorModeValue("gray.800", "white");
 
   const pickPalette = (name) => {
     const index = name.charCodeAt(0) % colorPalette.length
@@ -430,6 +434,12 @@ export default function Navbar() {
   }
 
   const { user, logout } = useAuthContext();
+
+  const Links = [
+  { name: user ? "Dashboard" : "Home", path: user ? "/dashboard" : "/" },
+  { name: "About", path: "/about" },
+  { name: "FAQs", path: "/faq" },
+];
 
   // ✅ Safely extract username/email from Amplify v6 user object
   const displayName =
@@ -468,6 +478,7 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <HStack spacing={6} display={{ base: "none", md: "flex" }}>
+          
           {Links.map((link) => (
             <NavLink key={link.name} to={link.path}>
               {link.name}
@@ -476,7 +487,8 @@ export default function Navbar() {
 
           {/* ✅ Auth Section */}
           {user ? (
-            <HStack spacing={3}>
+            <HStack spacing={6}>
+              
               <Avatar.Root size="md" colorPalette={pickPalette(avatarName)}>
                 <Avatar.Fallback name={avatarName} />
                 <Avatar.Image src="#" />
@@ -501,7 +513,7 @@ export default function Navbar() {
               </Button>
             </HStack>
           ) : (
-            <HStack spacing={3}>
+            <HStack spacing={6}>
               <Button
                 as={RouterLink}
                 to="/login"
