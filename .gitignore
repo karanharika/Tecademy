@@ -51,3 +51,4 @@ frontend/amplifytools.xcconfig
 #amplify-do-not-edit-end
 
 *config.env
+*.env
