@@ -104,7 +104,7 @@ export default function LoginForm() {
       await login(formData.username, formData.password);
 
       setMessage("✅ Login successful! Redirecting...");
-      setTimeout( () =>  navigate("/dashboard"), 3000);
+      setTimeout( () =>  navigate("/dashboard"), 1000);
     } catch (err) {
       setMessage("❌ " + err.message);
     }

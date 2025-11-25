@@ -145,8 +145,8 @@ export function AuthProvider({ children }) {
       try {
         const u = await getCurrentUser();
         const attributes = await fetchUserAttributes();
-        console.log("User attributes:", attributes);
-        console.log("user: ", u);
+        // console.log("User attributes:", attributes);
+        // console.log("user: ", u);
 
         const fullUser = { ...u, attributes };
         // setUser({ ...currentUser, attributes }); // CHECK here!!!!!
