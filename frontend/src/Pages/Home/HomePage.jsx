@@ -44,37 +44,27 @@ export default function HomePage() {
             _hover={{ bg: HoverBg, color: hoverColor }}
            mt={4} >Login</Button>
 
-            <Button as={RouterLink} to="/faq" bg={buttonBg} color={txtColor}
+            <Button as={RouterLink} to="/dashboard" bg={buttonBg} color={txtColor}
             _hover={{ bg: HoverBg, color: hoverColor }}
-           mt={4} >FAQ </Button>
+           mt={4} >Browse upcoming classes</Button>
 
 
         </Stack>
       </Box>
 
       <Box bg={boxBg} mt={10} ml="10%" p="2%" w={["85%", "80%", "60%", "40%"]} rounded="md">
-        <Text fontSize="xl">This is HomePage 🏠</Text>
+        <Text fontSize="xl">How does this platform work?</Text>
+        <Text mt={7}>Click on the FAQs button below to find more information about the platform.</Text>
 
         <Stack position="relative" top='20%' w="50%">
           <Button bg={buttonBg} color={txtColor}
             _hover={{ bg: HoverBg, color: hoverColor }}
-            mt={20}>Login</Button>
+            mt={20}>FAQs</Button>
 
-          <Button mt={4}>Sign up</Button>
         </Stack>
       </Box>
 
-      <Box bg={boxBg} mt={10} ml="10%" p="2%" w={["85%", "80%", "60%", "40%"]} rounded="md">
-        <Text fontSize="xl">This is HomePage 🏠</Text>
-
-        <Stack position="relative" top='20%' w="50%">
-          <Button bg={buttonBg} color={txtColor}
-            _hover={{ bg: HoverBg, color: hoverColor }}
-            mt={20}>Login</Button>
-
-          <Button mt={4}>Sign up</Button>
-        </Stack>
-      </Box>
+      
 
     </Box>
   );

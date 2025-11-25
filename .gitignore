@@ -39,7 +39,7 @@ frontend/amplify/backend/.temp
 frontend/build/
 frontend/dist/
 frontend/node_modules/
-frontend/src/aws-exports.js
+# frontend/src/aws-exports.js
 frontend/src/awsconfiguration.json
 frontend/src/amplifyconfiguration.json
 frontend/src/amplifyconfiguration.dart
@@ -51,3 +51,4 @@ frontend/amplifytools.xcconfig
 #amplify-do-not-edit-end
 
 *config.env
+*.env

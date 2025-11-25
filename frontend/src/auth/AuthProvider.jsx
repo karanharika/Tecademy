@@ -153,7 +153,7 @@ export function AuthProvider({ children }) {
         // setUser(u);
         setUser(fullUser);
 
-        console.log("Printing User: ", fullUser);
+        // console.log("Printing User: ", fullUser);
       } catch {
         setUser(null); // no user
       } finally {
