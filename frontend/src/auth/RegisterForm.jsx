@@ -1,438 +1,268 @@
-// RegisterForm.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import * as Auth from "aws-amplify/auth";
-import { confirmSignUp, resendSignUpCode  } from "aws-amplify/auth";
+import { useAuth } from "./useAuth";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import {
+    Box,
+    Button,
+    Input,
+    Stack,
+    Heading,
+    Text,
+    Link,
+    Flex,
+    Container,
+    HStack,
+    Badge,
+    // Highlight removed
+    Checkbox
+} from "@chakra-ui/react";
 import { useColorModeValue } from "../components/ui/color-mode";
-import { Fieldset, Field, Input, Button, Box, Stack, HStack, Heading, Text, defineStyle, Icon, IconButton } from "@chakra-ui/react";
-import { Eye, EyeOff, Mail, UserPen, UserLock, CalendarDays, ShieldUser } from "lucide-react";
 
 export default function RegisterForm() {
-    const [showPassword, setShowPassword] = useState(false);
-    const [formData, setFormData] = useState({
-        username: "",
-        email: "",
-        firstName: "",
-        lastName: "",
-        dob: "",
-        password: "",
-        confirmPassword: "",
-    });
+    const { register } = useAuth();
+    const navigate = useNavigate();
 
-    const [confirmationCode, setConfirmationCode] = useState("");
-    const [isConfirming, setIsConfirming] = useState(false);
-    const [message, setMessage] = useState("");
-    const [pendingUsername, setPendingUsername] = useState(
-        localStorage.getItem("pendingUsername") || ""
+    // Step State
+    const [step, setStep] = useState(1);
+
+    // Form State
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [selectedSubjects, setSelectedSubjects] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const [error, setError] = useState("");
+
+    const bgColor = useColorModeValue("gray.50", "gray.900");
+    const cardBg = useColorModeValue("white", "gray.800");
+    const borderColor = useColorModeValue("gray.200", "gray.700");
+    const inputBorderColor = useColorModeValue("gray.800", "whiteAlpha.800"); // Negative/High Contrast Border
+
+    // Color Mode Values (Moved to top level to avoid conditional hook call error)
+    const tealBg = useColorModeValue("teal.50", "teal.900");
+    const tealText = useColorModeValue("teal.800", "teal.200");
+    const tealSubText = useColorModeValue("teal.600", "teal.300");
+    const grayText = useColorModeValue("gray.700", "gray.200");
+    const hoverBg = useColorModeValue("gray.50", "gray.700");
+
+    // Predefined Subjects
+    const allSubjects = [
+        "Artificial Intelligence", "Machine Learning", "Data Science", "Python", "React",
+        "JavaScript", "Node.js", "Web Development", "Cybersecurity", "Cloud Computing",
+        "DevOps", "Blockchain", "UI/UX Design", "Digital Marketing", "Game Development",
+        "Mobile App Dev", "Java", "C++", "SQL", "System Design"
+    ];
+
+    const filteredSubjects = allSubjects.filter(sub =>
+        sub.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const navigate = useNavigate(); // ✅ for redirect
-
-    function handleChange(e) {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    }
-
-    async function handleRegister(e) {
-        e.preventDefault();
-        if (formData.password !== formData.confirmPassword) {
-            setMessage("Passwords do not match");
-            return;
-        }
-
-        try {
-            const birthdate = formData.dob?.slice(0, 10) ?? "";
-
-            await Auth.signUp({
-                username: formData.username,
-                password: formData.password,
-                options: {
-                    userAttributes: {
-                        email: formData.email,
-                        given_name: formData.firstName,
-                        family_name: formData.lastName,
-                        birthdate,
-                    },
-                },
-            });
-            setPendingUsername(formData.username);
-            localStorage.setItem("pendingUsername", formData.username);
-            setIsConfirming(true);   // switch UI to confirm
-            setMessage("We emailed you a confirmation code. Please enter it here.");
-
-        } catch (err) {
-            setMessage(err.message);
-        }
-    }
-
-    async function handleConfirm(e) {
-        e.preventDefault();
-        try {
-            const username = pendingUsername || localStorage.getItem("pendingUsername");
-            console.log(username);
-            if (!username) {
-                setMessage("No username found. Please register again.");
+    const handleSubjectChange = (subject) => {
+        if (selectedSubjects.includes(subject)) {
+            setSelectedSubjects(selectedSubjects.filter(s => s !== subject));
+        } else {
+            if (selectedSubjects.length >= 3) {
+                alert("You can select up to 3 subjects only.");
                 return;
             }
-
-            // await Auth.confirmSignUp(username, confirmationCode);
-            await confirmSignUp({
-                username,
-                confirmationCode
-            });
-
-            setMessage("✅ Your account is confirmed! Redirecting to login...");
-            localStorage.removeItem("pendingUsername");
-
-            setTimeout(() => {
-                navigate("/login");
-            }, 1500);
-
-        } catch (err) {
-            setMessage("❌ " + err.message);
-            // stay on confirm page
+            setSelectedSubjects([...selectedSubjects, subject]);
         }
-    }
+    };
 
-
-
-    // async function handleResendCode() {
-    //     try {
-    //         await Auth.resendSignUpCode(formData.username);
-    //         setMessage("A new confirmation code has been sent to your email.");
-    //     } catch (err) {
-    //         setMessage(err.message);
-    //     }
-    // }
-
-    async function handleResendCode() {
-        try {
-          const username = pendingUsername || localStorage.getItem("pendingUsername");
-          if (!username) {
-            setMessage("No username found. Please register again.");
+    const handleNext = () => {
+        if (!username || !password || !email || !firstName || !lastName) {
+            setError("Please fill in all fields.");
             return;
-          }
-          const { destination, deliveryMedium } = await resendSignUpCode({
-            username,
-          });
-          setMessage(`📩 A new code has been sent via ${deliveryMedium} to ${destination}`);
-        } catch (err) {
-          setMessage("❌ " + err.message);
         }
-      }
+        setError("");
+        setStep(2);
+    };
 
-    const boxBg = useColorModeValue("teal.400", "teal.800");
-    const buttonBg = useColorModeValue("teal.100", "teal.700");
-    const txtColor = useColorModeValue("black", "white");
-    const HoverBg = useColorModeValue("teal.200", "teal.900");
-    const hoverColor = useColorModeValue("teal.700", "teal.200");
-    const highlightColor = useColorModeValue("pink.800", "pink.300");
-    const altButtonBg = useColorModeValue("teal.800", "teal.100");
-    const altTxtColor = useColorModeValue("white", "black");
-    const altHoverBg = useColorModeValue("teal.900", "teal.200");
-    const altHoverColor = useColorModeValue("teal.200", "teal.700");
-
-    const floatingStyles = defineStyle({
-        pos: "absolute",
-        bg: { base: "{colors.teal.400}", _dark: "{colors.teal.800}" },
-        px: "0.5",
-        top: "-2",
-        ml: "60px",
-        insetStart: "2",
-        fontWeight: "semibold",
-        pointerEvents: "none",
-        transition: "position",
-        _peerPlaceholderShown: {
-            color: "fg.muted",
-            top: "3",
-            ml: "60px",
-            insetStart: "3",
-        },
-        _peerFocusVisible: {
-            color: { base: "{colors.teal.700}", _dark: "{colors.teal.200}" },
-            top: "-2",
-            ml: "60px",
-            insetStart: "2",
-        },
-    })
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
+        try {
+            await register(username, password, email, firstName, lastName, selectedSubjects);
+            navigate("/login");
+        } catch (err) {
+            setError("Registration failed. Try again.");
+        }
+    };
 
     return (
-        <Box
+        <Flex
             minH="100vh"
-            display="flex"
-            alignItems="center"
-            justifyContent="center">
-
+            align="center"
+            justify="center"
+            bg={bgColor}
+            backgroundImage={useColorModeValue(
+                "radial-gradient(#CBD5E0 1px, transparent 1px)",
+                "radial-gradient(#2D3748 1px, transparent 1px)"
+            )}
+            backgroundSize="20px 20px"
+            position="relative"
+            overflow="hidden"
+        >
+            {/* Lime Ball Animation */}
             <Box
-                maxW="lg"
-                w="full"
-                mt={"100px"}
-                p={6}
-                borderRadius="2xl"
-                boxShadow="md"
-                bg={boxBg}
-            >
-                <Heading mb={6} textAlign="center" fontSize="3xl" color={hoverColor}>
-                    {isConfirming ? "Confirm Your Account" : "Register & Sign Up"}
-                </Heading>
+                position="absolute"
+                top="0"
+                left="0"
+                w="100px"
+                h="100px"
+                bg="lime"
+                borderRadius="full"
+                filter="blur(40px)"
+                opacity="0.6"
+                animation="roam 20s infinite linear"
+                zIndex="0"
+            />
 
-                {!isConfirming ? (
-                    // ---------- Registration Form ----------
-                    <form onSubmit={handleRegister}>
-                        <Fieldset.Root size="lg" maxW="md">
-                            <Stack spacing={5}>
+            <Container maxW="lg" py={12} px={6} position="relative" zIndex="1">
+                <Box
+                    rounded="xl"
+                    bg={cardBg}
+                    boxShadow="2xl"
+                    p={8}
+                    borderWidth="1px"
+                    borderColor={borderColor}
+                >
+                    <Stack align="center" mb={8}>
+                        <Heading fontSize="4xl" textAlign="center">Sign up</Heading>
+                        <Text fontSize="lg" color="gray.500" textAlign="center">
+                            to enjoy all of our cool <Link color="teal.500" href="#">features</Link> ✌️
+                        </Text>
+                    </Stack>
 
-                                <Fieldset.Legend mt={6} color={txtColor}>Create your account</Fieldset.Legend>
-                                <Fieldset.HelperText>
-                                    Please fill in the details below.
-                                </Fieldset.HelperText>
+                    {error && (
+                        <Box mb={4} p={3} bg="red.100" color="red.700" borderRadius="md">
+                            {error}
+                        </Box>
+                    )}
 
-                                <Fieldset.Content>
-                                    <Field.Root>
-                                        <Box pos="relative" w="full" mt={5}>
-                                            <HStack>
-                                                <Box p={"11.5px"}>
-                                                    <Icon as={UserLock} boxSize={6} color={hoverColor} />
-                                                </Box>
+                    <form onSubmit={handleSubmit}>
+                        {step === 1 ? (
+                            <Stack spacing={4}>
+                                <HStack>
+                                    <Box>
+                                        <Text mb={1} fontWeight="medium">First Name</Text>
+                                        <Input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} borderColor={inputBorderColor} />
+                                    </Box>
+                                    <Box>
+                                        <Text mb={1} fontWeight="medium">Last Name</Text>
+                                        <Input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} borderColor={inputBorderColor} />
+                                    </Box>
+                                </HStack>
+                                <Box>
+                                    <Text mb={1} fontWeight="medium">Email address</Text>
+                                    <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} borderColor={inputBorderColor} />
+                                </Box>
+                                <Box>
+                                    <Text mb={1} fontWeight="medium">Username</Text>
+                                    <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)} borderColor={inputBorderColor} />
+                                </Box>
+                                <Box>
+                                    <Text mb={1} fontWeight="medium">Password</Text>
+                                    <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} borderColor={inputBorderColor} />
+                                </Box>
 
-                                                <Input
-                                                    className="peer"
-                                                    placeholder=" "
-                                                    name="username"
-                                                    value={formData.username}
-                                                    onChange={handleChange}
-                                                    required
-                                                    autoComplete="username"
-                                                    variant="outline"
-                                                    borderColor={HoverBg}
-                                                    _hover={{ borderColor: hoverColor }}
-                                                    _focus={{ borderColor: hoverColor, boxShadow: `0 0 0 1px ${hoverColor}` }}
-                                                />
-                                                <Field.Label css={floatingStyles}>Username</Field.Label>
-                                            </HStack>
-                                        </Box>
-                                    </Field.Root>
-
-                                    <Field.Root>
-                                        <Box pos="relative" w="full" mt={5}>
-                                            <HStack>
-                                                <Box p={"11.5px"}>
-                                                    <Icon as={Mail} boxSize={6} color={hoverColor} />
-                                                </Box>
-                                                <Input
-                                                    className="peer"
-                                                    placeholder=" "
-                                                    type="email"
-                                                    name="email"
-                                                    value={formData.email}
-                                                    onChange={handleChange}
-                                                    required
-                                                    autoComplete="email"
-                                                    variant="outline"
-                                                    borderColor={HoverBg}
-                                                    _hover={{ borderColor: hoverColor }}
-                                                    _focus={{ borderColor: hoverColor, boxShadow: `0 0 0 1px ${hoverColor}` }}
-                                                />
-                                                <Field.Label css={floatingStyles}>Email</Field.Label>
-                                            </HStack>
-                                        </Box>
-                                    </Field.Root>
-
-                                    <Field.Root>
-                                        <Box pos="relative" w="full" mt={5}>
-                                            <HStack>
-                                                <Box p={"11.5px"}>
-                                                    <Icon as={UserPen} boxSize={6} color={hoverColor} />
-                                                </Box>
-                                                <Input
-                                                    className="peer"
-                                                    placeholder=" "
-                                                    name="firstName"
-                                                    value={formData.firstName}
-                                                    onChange={handleChange}
-                                                    autoComplete="given-name"
-                                                    required
-                                                    variant="outline"
-                                                    borderColor={HoverBg}
-                                                    _hover={{ borderColor: hoverColor }}
-                                                    _focus={{ borderColor: hoverColor, boxShadow: `0 0 0 1px ${hoverColor}` }}
-                                                />
-                                                <Field.Label css={floatingStyles}>First Name (Given Name)</Field.Label>
-                                            </HStack>
-                                        </Box>
-                                    </Field.Root>
-
-                                    <Field.Root>
-                                        <Box pos="relative" w="full" mt={5}>
-                                            <HStack>
-                                                <Box p={"11.5px"}>
-                                                    <Icon as={UserPen} boxSize={6} color={hoverColor} />
-                                                </Box>
-                                                <Input
-                                                    className="peer"
-                                                    placeholder=" "
-                                                    name="lastName"
-                                                    value={formData.lastName}
-                                                    onChange={handleChange}
-                                                    autoComplete="family-name"
-                                                    required
-                                                    borderColor={HoverBg}
-                                                    _hover={{ borderColor: hoverColor }}
-                                                    _focus={{ borderColor: hoverColor, boxShadow: `0 0 0 1px ${hoverColor}` }}
-                                                />
-                                                <Field.Label css={floatingStyles}>Last Name</Field.Label>
-                                            </HStack>
-                                        </Box>
-                                    </Field.Root>
-
-                                    <Field.Root>
-                                        <Box pos="relative" w="full" mt={5}>
-                                            <HStack>
-                                                <Box p={"11.5px"}>
-                                                    <Icon as={CalendarDays} boxSize={6} color={hoverColor} />
-                                                </Box>
-                                                <Input
-                                                    className="peer"
-                                                    placeholder=" "
-                                                    type="date"
-                                                    name="dob"
-                                                    value={formData.dob}
-                                                    onChange={handleChange}
-                                                    autoComplete="bday"
-                                                    required
-                                                    variant="outline"
-                                                    borderColor={HoverBg}
-                                                    _hover={{ borderColor: hoverColor }}
-                                                    _focus={{ borderColor: hoverColor, boxShadow: `0 0 0 1px ${hoverColor}` }}
-
-                                                />
-                                                <Field.Label css={floatingStyles}>Date of Birth</Field.Label>
-                                            </HStack>
-                                        </Box>
-                                    </Field.Root>
-
-                                    <Field.Root>
-                                        <Box pos="relative" w="full" mt={2}>
-                                            <HStack>
-                                                <IconButton
-                                                    color={hoverColor}
-                                                    aria-label={showPassword ? "Hide password" : "Show password"}
-                                                    size="xl"
-                                                    variant="ghost"
-                                                    _hover={{ bg: "teal.500" }}
-                                                    rounded="full"
-                                                    onClick={() => setShowPassword(!showPassword)}
-                                                > {showPassword ? <Eye /> : <EyeOff />}
-                                                </IconButton>
-                                                <Input
-                                                    className="peer"
-                                                    placeholder=""
-                                                    type={showPassword ? "text" : "password"}
-                                                    name="password"
-                                                    value={formData.password}
-                                                    onChange={handleChange}
-                                                    required
-                                                    autoComplete="new-password"
-                                                    variant="outline"
-                                                    borderColor={HoverBg}
-                                                    _hover={{ borderColor: hoverColor }}
-                                                    _focus={{ borderColor: hoverColor, boxShadow: `0 0 0 1px ${hoverColor}` }}
-
-                                                />
-                                                <Field.Label css={floatingStyles}>Password</Field.Label>
-                                            </HStack>
-                                        </Box>
-                                    </Field.Root>
-
-                                    <Field.Root>
-                                        <Box pos="relative" w="full" mt={2}>
-                                            <HStack>
-                                                <Box p={"11.5px"}>
-                                                    <Icon as={ShieldUser} boxSize={6} color={hoverColor} />
-                                                </Box>
-                                                <Input
-                                                    className="peer"
-                                                    placeholder=""
-                                                    type={showPassword ? "text" : "password"}
-                                                    name="confirmPassword"
-                                                    value={formData.confirmPassword}
-                                                    onChange={handleChange}
-                                                    required
-                                                    autoComplete="new-password"
-                                                    variant="outline"
-                                                    borderColor={HoverBg}
-                                                    _hover={{ borderColor: hoverColor }}
-                                                    _focus={{ borderColor: hoverColor, boxShadow: `0 0 0 1px ${hoverColor}` }}
-                                                />
-                                                <Field.Label css={floatingStyles}>Confirm Password</Field.Label>
-                                            </HStack>
-                                        </Box>
-                                    </Field.Root>
-                                </Fieldset.Content>
-
-                                <Button
-                                    bg={altButtonBg}
-                                    color={altTxtColor}
-                                    _hover={{ bg: altHoverBg, color: altHoverColor }}
-                                    mt={7}
-                                    mb={3}
-                                    ml={"60px"}
-                                    maxW="3xs"
-                                    w="full"
-                                    type="submit" alignSelf="flex-start">
-                                    Register
+                                <Button colorScheme="teal" size="lg" fontSize="md" onClick={handleNext} mt={4} w="full">
+                                    Next
                                 </Button>
                             </Stack>
-                        </Fieldset.Root>
-                    </form>
-                ) : (
-                    // ---------- Confirmation Form ----------
-                    <form onSubmit={handleConfirm}>
-                        <Fieldset.Root size="lg" maxW="md">
-                            <Stack spacing={5}>
-                                <Fieldset.Legend>Enter Confirmation Code</Fieldset.Legend>
-                                <Fieldset.HelperText>
-                                    Please enter the code sent to your email.
-                                </Fieldset.HelperText>
+                        ) : (
+                            <Stack spacing={4}>
+                                <Box bg={tealBg} p={4} borderRadius="md" borderLeft="4px solid" borderColor="teal.500">
+                                    <Text fontSize="lg" fontWeight="bold" color={tealText}>
+                                        To earn tokens you have to <Box as="span" px="1" py="1" bg="teal.200" color="teal.800">share your knowledge</Box>
+                                    </Text>
+                                    <Text fontSize="sm" color={tealSubText} mt={1}>
+                                        Select up to 3 subjects you can teach.
+                                    </Text>
+                                </Box>
 
-                                <Fieldset.Content>
-                                    <Field.Root>
-                                        <Field.Label>Confirmation Code</Field.Label>
-                                        <Input
-                                            name="confirmationCode"
-                                            value={confirmationCode}
-                                            onChange={(e) => setConfirmationCode(e.target.value)}
-                                            required
+                                <Checkbox.Root
+                                    checked={selectedSubjects.length === 0 && searchQuery === "NOSUBJECT"}
+                                    onCheckedChange={(e) => {
+                                        if (e.checked) {
+                                            setSelectedSubjects([]);
+                                            setSearchQuery("NOSUBJECT"); // Marker for no subject
+                                        } else {
+                                            setSearchQuery("");
+                                        }
+                                    }}
+                                    colorPalette="teal"
+                                >
+                                    <Checkbox.HiddenInput />
+                                    <Checkbox.Control>
+                                        <Checkbox.Indicator />
+                                    </Checkbox.Control>
+                                    <Checkbox.Label fontWeight="bold" color={grayText}>
+                                        I do not want to teach any subjects (NO SUBJECT)
+                                    </Checkbox.Label>
+                                </Checkbox.Root>
 
-                                        />
-                                    </Field.Root>
-                                </Fieldset.Content>
+                                <Input
+                                    placeholder="Search subjects (e.g. AI, React)..."
+                                    value={searchQuery === "NOSUBJECT" ? "" : searchQuery}
+                                    onChange={(e) => {
+                                        // If user starts typing, clear "NOSUBJECT" state
+                                        if (searchQuery === "NOSUBJECT") {
+                                            setSearchQuery("");
+                                        }
+                                        setSearchQuery(e.target.value);
+                                    }}
+                                    borderColor={inputBorderColor}
+                                    disabled={searchQuery === "NOSUBJECT"}
+                                />
 
-                                <Stack direction="row" spacing={4}>
-                                    <Button
-                                        bg={altButtonBg}
-                                        color={altTxtColor}
-                                        _hover={{ bg: altHoverBg, color: altHoverColor }}
-                                        type="submit" >
-                                        Confirm Account
+                                <Box maxH="300px" overflowY="auto" borderWidth="1px" borderRadius="md" p={2} borderColor={borderColor}>
+                                    <Stack spacing={2}>
+                                        {filteredSubjects.map(subject => (
+                                            <Box
+                                                key={subject}
+                                                p={2}
+                                                borderWidth="1px"
+                                                borderRadius="md"
+                                                bg={selectedSubjects.includes(subject) ? "teal.50" : "transparent"}
+                                                borderColor={selectedSubjects.includes(subject) ? "teal.500" : "transparent"}
+                                                _dark={{
+                                                    bg: selectedSubjects.includes(subject) ? "teal.900" : "transparent",
+                                                    borderColor: selectedSubjects.includes(subject) ? "teal.500" : "transparent",
+                                                }}
+                                                cursor="pointer"
+                                                onClick={() => handleSubjectChange(subject)}
+                                                _hover={{ bg: hoverBg }}
+                                            >
+                                                <HStack justify="space-between">
+                                                    <Text>{subject}</Text>
+                                                    {selectedSubjects.includes(subject) && <Badge colorScheme="teal">Selected</Badge>}
+                                                </HStack>
+                                            </Box>
+                                        ))}
+                                    </Stack>
+                                </Box>
+
+                                <HStack justify="space-between" mt={4}>
+                                    <Button variant="ghost" onClick={() => setStep(1)}>Back</Button>
+                                    <Button type="submit" colorScheme="teal" size="lg" fontSize="md">
+                                        Register
                                     </Button>
-                                    <Button variant="outline" onClick={handleResendCode}>
-                                        Resend Code
-                                    </Button>
-                                </Stack>
+                                </HStack>
                             </Stack>
-                        </Fieldset.Root>
+                        )}
                     </form>
-                )}
 
-                {message && (
-                    <Text mt={4} color={hoverColor} fontWeight="medium" textAlign="center">
-                        {message}
-                    </Text>
-                )}
-            </Box>
-        </Box>
+                    <Stack pt={6}>
+                        <Text align="center">
+                            Already a user? <Link as={RouterLink} to="/login" color="teal.500">Login</Link>
+                        </Text>
+                    </Stack>
+                </Box >
+            </Container >
+        </Flex >
     );
 }

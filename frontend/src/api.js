@@ -1,10 +1,11 @@
 import axios from "axios";
 
 // const URL = "http://localhost:3000"
- const URL = import.meta.env.VITE_API_URL;
+const URL = import.meta.env.VITE_API_URL;
 
-export async function getPosts() {
-    const response = await axios.get(`${URL}/posts`)
+export async function getPosts(query = "") {
+    const url = query ? `${URL}/posts?q=${query}` : `${URL}/posts`
+    const response = await axios.get(url)
 
     if (response.status == 200) {
         return response.data

@@ -51,7 +51,7 @@ function ProtectedRoute({ children }) {
 
 function App() {
   return (
-    <Box p={6}>
+    <Box>
       <Navbar />
 
       <Routes>
@@ -59,7 +59,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
-        <Route path="/FAQ" element={<FAQ/>} /> 
+        <Route path="/FAQ" element={<FAQ />} />
         {/* Protected route example */}
         <Route
           path="/dashboard"

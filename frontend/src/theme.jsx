@@ -6,14 +6,14 @@ const buttonRecipe = defineRecipe({
   base: {
     borderRadius: "md",
     fontWeight: "bold",
-    color: "red",
+    color: "white",
   },
   variants: {
     solid: {
-      bg: { base: "yellow.400", _dark: "teal.400" },
-      color: { base: "green", _dark: "yellow" },
+      bg: { base: "pink.500", _dark: "teal.500" },
+      color: { base: "white", _dark: "white" },
       _hover: {
-        bg: { base: "yellow.200", _dark: "teal.700" },
+        bg: { base: "pink.600", _dark: "teal.600" },
       },
     },
   },
@@ -28,7 +28,7 @@ const system = createSystem(defaultConfig, {
       margin: 0,
       padding: 0,
       backgroundColor: {
-        base: "teal.100",
+        base: "orange.50",
         _dark: "teal.900",
       },
       color: {
@@ -40,9 +40,9 @@ const system = createSystem(defaultConfig, {
   theme: {
     tokens: {
       colors: {
-        floatingBg: { value: "#14b8a6" },      // teal.400 Light
+        floatingBg: { value: "#fb923c" },      // orange.400 Light
         floatingBgDark: { value: "#0c5d56" },  // teal.700 Dark
-        floatingLabelColor: { value: "#0c5d56" },     // teal.700 Light
+        floatingLabelColor: { value: "#9a3412" },     // orange.800 Light
         floatingLabelColorDark: { value: "#99f6e4" }, // teal.200 Dark
       },
     },
@@ -56,11 +56,11 @@ const system = createSystem(defaultConfig, {
           _dark: { value: "#f0f4f9" },
         },
         bg: {
-          default: { value: "#6695d1" },
-          _dark: { value: "#1a202c" },
+          default: { value: "#fff7ed" }, // orange.50
+          _dark: { value: "#134e4a" },   // teal.900
         },
         floatingBg: {
-          value: { base: "{colors.teal.400}", _dark: "{colors.teal.700}" },
+          value: { base: "{colors.orange.400}", _dark: "{colors.teal.700}" },
         },
         floatingLabelColor: {
           value: { base: "{colors.floatingLabelColor}", _dark: "{colors.floatingLabelColorDark}" },

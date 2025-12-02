@@ -7,11 +7,28 @@ let postRoutes = express.Router()
 // http://localhost:3000/posts
 postRoutes.route("/posts").get(async (request, response) => {
     let db = database.getDb()
-    let data = await db.collection("Posts").find({}).toArray()
+    let query = {}
+    if (request.query.q) {
+        const searchRegex = { $regex: request.query.q, $options: "i" }
+        query = {
+            $or: [
+                { course_name: searchRegex },
+                { Branch: searchRegex },
+                { instructor_fname: searchRegex },
+                { instructor_lname: searchRegex }
+            ]
+        }
+    }
+    let data = await db.collection("Posts").find(query).toArray()
     if (data.length > 0) {
         response.json(data)
     } else {
-        throw new Error("Data not found!")
+        // If searching, return empty array instead of error
+        if (request.query.q) {
+            response.json([])
+        } else {
+            response.json([])
+        }
     }
 })
 
@@ -35,8 +52,10 @@ postRoutes.route("/posts").post(async (request, response) => {
         "course_name": request.body.course_name,
         "instructor_fname": request.body.instructor_fname,
         "instructor_lname": request.body.instructor_lname,
+        "instructor_username": request.body.instructor_username, // Added for host check
         "date_created": request.body.date_created,
         "session_date": request.body.session_date,
+        "duration": request.body.duration, // Added duration
         "join_link": request.body.join_link
     }
     let data = await db.collection("Posts").insertOne(mongoObject)
@@ -58,7 +77,7 @@ postRoutes.route("/posts/:id").put(async (request, response) => {
             "join_link": request.body.join_link
         }
     }
-    let data = await db.collection("Posts").updateOne({_id: new ObjectId(request.params.id)}, mongoObject)
+    let data = await db.collection("Posts").updateOne({ _id: new ObjectId(request.params.id) }, mongoObject)
     response.json(data)
 })
 

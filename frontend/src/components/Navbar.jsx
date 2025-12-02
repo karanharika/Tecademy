@@ -416,7 +416,7 @@ function NavLink({ to, children }) {
 export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isOpened, setIsOpen] = useState(false);
-  const navBg = useColorModeValue("teal.400", "teal.700");
+  const navBg = useColorModeValue("rgba(56, 178, 172, 0.6)", "rgba(19, 78, 74, 0.6)"); // Teal with more transparency
   const dropdownBg = useColorModeValue("teal.200", "teal.800");
   const headingColor = useColorModeValue("black", "white");
   const altButtonBg = useColorModeValue("teal.800", "teal.100");
@@ -436,10 +436,10 @@ export default function Navbar() {
   const { user, logout } = useAuthContext();
 
   const Links = [
-  { name: user ? "Dashboard" : "Home", path: user ? "/dashboard" : "/" },
-  { name: "About", path: "/about" },
-  { name: "FAQs", path: "/faq" },
-];
+    { name: user ? "Dashboard" : "Home", path: user ? "/dashboard" : "/" },
+    { name: "About", path: "/about" },
+    { name: "FAQs", path: "/faq" },
+  ];
 
   // ✅ Safely extract username/email from Amplify v6 user object
   const displayName =
@@ -453,6 +453,7 @@ export default function Navbar() {
   return (
     <Box
       bg={navBg}
+      backdropFilter="blur(10px)"
       px={4}
       position="fixed"
       top="0"
@@ -478,7 +479,7 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <HStack spacing={6} display={{ base: "none", md: "flex" }}>
-          
+
           {Links.map((link) => (
             <NavLink key={link.name} to={link.path}>
               {link.name}
@@ -488,7 +489,7 @@ export default function Navbar() {
           {/* ✅ Auth Section */}
           {user ? (
             <HStack spacing={6}>
-              
+
               <Avatar.Root size="md" colorPalette={pickPalette(avatarName)}>
                 <Avatar.Fallback name={avatarName} />
                 <Avatar.Image src="#" />
