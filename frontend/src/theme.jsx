@@ -10,10 +10,10 @@ const buttonRecipe = defineRecipe({
   },
   variants: {
     solid: {
-      bg: { base: "yellow.400", _dark: "teal.400" },
+      bg: { base: "yellow.400", _dark: "teal.800" },
       color: { base: "green", _dark: "yellow" },
       _hover: {
-        bg: { base: "yellow.200", _dark: "teal.700" },
+        bg: { base: "yellow.200", _dark: "teal.800" },
       },
     },
   },
@@ -40,10 +40,10 @@ const system = createSystem(defaultConfig, {
   theme: {
     tokens: {
       colors: {
-        floatingBg: { value: "#14b8a6" },      // teal.400 Light
+        floatingBg: { value: "#0c5d56" },      // teal.400 Light
         floatingBgDark: { value: "#0c5d56" },  // teal.700 Dark
         floatingLabelColor: { value: "#0c5d56" },     // teal.700 Light
-        floatingLabelColorDark: { value: "#99f6e4" }, // teal.200 Dark
+        floatingLabelColorDark: { value: "#0c5d56" }, // teal.200 Dark
       },
     },
     recipes: {
@@ -52,15 +52,15 @@ const system = createSystem(defaultConfig, {
     semanticTokens: {
       colors: {
         fg: {
-          default: { value: "#1a202c" },
-          _dark: { value: "#f0f4f9" },
+          default: { value: "#0c5d56" },
+          _dark: { value: "#0c5d56" },
         },
         bg: {
-          default: { value: "#6695d1" },
-          _dark: { value: "#1a202c" },
+          default: { value: "#0c5d56" },
+          _dark: { value: "#0c5d56" },
         },
         floatingBg: {
-          value: { base: "{colors.teal.400}", _dark: "{colors.teal.700}" },
+          value: { base: "{colors.teal.800}", _dark: "{colors.teal.700}" },
         },
         floatingLabelColor: {
           value: { base: "{colors.floatingLabelColor}", _dark: "{colors.floatingLabelColorDark}" },

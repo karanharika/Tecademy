@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {  Box,  Heading,  Text,  Stack,  Accordion,  Button,  Textarea,  VStack,  HStack,  Input,} from "@chakra-ui/react";
+import { Box, Heading, Text, Stack, Accordion, Button, Textarea, VStack, HStack, Input, } from "@chakra-ui/react";
 import { useColorMode, useColorModeValue } from "../../components/ui/color-mode";
 
 export default function FAQ() {
@@ -9,10 +9,10 @@ export default function FAQ() {
   const HoverBg = useColorModeValue("teal.200", "teal.600");
   const hoverColor = useColorModeValue("teal.700", "teal.200");
 
- 
+
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-  
+
 
   const handleAddComment = () => {
     if (newComment.trim() !== "") {
@@ -22,9 +22,10 @@ export default function FAQ() {
   };
 
   return (
-    <Box>
+    <Box mt={0} overflowX="hidden">
+
       {/* About Tecadamy */}
-      <Box  bg={boxBg}  mt={20}  ml="10%" p="2%"  w={["85%", "80%", "60%", "80%"]}  rounded="md"  boxShadow="xl">
+      <Box bg={boxBg} mt={"125px"} ml="10%" p="2%" w={["85%", "80%", "60%", "80%"]} rounded="md" boxShadow="xl">
         <Heading color={hoverColor} size="5xl">
           Tecadamy
         </Heading>
@@ -127,8 +128,8 @@ export default function FAQ() {
         </Accordion.Root>
       </Box>
 
-      
-      <Box  bg={boxBg} mt={20} ml="10%"  p="2%" w={["85%", "80%", "60%", "80%"]}  rounded="md"  boxShadow="xl">
+
+      <Box bg={boxBg} mt={20} mb={20} ml="10%" p="2%" w={["85%", "80%", "60%", "80%"]} rounded="md" boxShadow="xl">
         <Heading color={hoverColor} size="3xl" mb={4}>
           Leave your questions here
         </Heading>

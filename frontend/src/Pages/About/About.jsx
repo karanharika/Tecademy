@@ -17,6 +17,7 @@ export default function About() {
 
       <Box bg={boxBg}
         mt={"125px"}
+        mb={"5%"}
         ml={"2.5%"}
         mr={"2.5%"}
         p={"5%"}

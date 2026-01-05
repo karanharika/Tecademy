@@ -15,15 +15,32 @@ userRoutes.route("/users").get(async (request, response) => {
     }
 })
 
+// Get all teachers (users with subjects)
+userRoutes.route("/user/teachers").get(async (req, response) => {
+    let db_connect = database.getDb();
+    // Find users where subjects array exists and is not empty
+    let query = { subjects: { $exists: true, $type: "array", $ne: [] } };
+    let data = await db_connect.collection("Users").find(query).toArray();
+    // Return only public info
+    const teachers = data.map(user => ({
+        _id: user._id,
+        FirstName: user.FirstName,
+        LastName: user.LastName,
+        subjects: Array.isArray(user.subjects) ? user.subjects : []
+    }));
+    response.json(teachers);
+});
+
+
 // 2 - Get one
 // http://localhost:3000/users/1234
 userRoutes.route("/users/:username").get(async (request, response) => {
     let db = database.getDb()
     let data = await db.collection("Users").findOne({ username: request.params.username })
-    if (Object.keys(data).length > 0) {
+    if (data) {
         response.json(data)
     } else {
-        throw new Error("Data not found! (1234)")
+        response.status(404).json({ message: "User not found" })
     }
 })
 
@@ -35,7 +52,8 @@ userRoutes.route("/users").post(async (request, response) => {
         "LastName": request.body.LastName,
         "DOB": request.body.DOB,
         "email": request.body.email,
-        "username": request.body.username
+        "username": request.body.username,
+        "tokens": 100
     }
     let data = await db.collection("Users").insertOne(mongoObject)
     response.json(data)
@@ -63,5 +81,9 @@ userRoutes.route("/users/:username").delete(async (request, response) => {
     let data = await db.collection("Users").deleteOne({ username: request.params.username })
     response.json(data)
 })
+
+
+
+
 
 module.exports = userRoutes
