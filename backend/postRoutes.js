@@ -35,8 +35,10 @@ postRoutes.route("/posts").post(async (request, response) => {
         "course_name": request.body.course_name,
         "instructor_fname": request.body.instructor_fname,
         "instructor_lname": request.body.instructor_lname,
+        "instructor_username": request.body.instructor_username,
         "date_created": request.body.date_created,
         "session_date": request.body.session_date,
+        "duration": request.body.duration, 
         "join_link": request.body.join_link
     }
     let data = await db.collection("Posts").insertOne(mongoObject)

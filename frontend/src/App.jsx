@@ -25,6 +25,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import HomePage from "./Pages/Home/HomePage";
 import About from "./Pages/About/About.jsx";
 import Dashboard from "./Pages/Dashboard/Dashboard.jsx"; // <-- add dashboard page
@@ -51,7 +52,7 @@ function ProtectedRoute({ children }) {
 
 function App() {
   return (
-    <Box p={6}>
+    <Box p={0} >
       <Navbar />
 
       <Routes>
@@ -79,6 +80,7 @@ function App() {
           }
         />
       </Routes>
+      <Footer />
     </Box>
   );
 }

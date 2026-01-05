@@ -63,3 +63,10 @@ export async function getUser(username) {
     }
 }
 
+export async function createUser(user) {
+    console.log("API CALLING...", user)
+    const response = await axios.post(`${URL}/users`, user)
+    console.log("API RESPONSE:", response.status);
+    return response
+}
+
